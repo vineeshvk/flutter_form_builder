@@ -460,7 +460,7 @@ class _FormBuilderTextFieldState
 
   @override
   void didChange(String? value) {
-    super.didChange(value);
+    super.didChangeValue(value);
 
     if (_effectiveController!.text != value) {
       _effectiveController!.text = value ?? '';

@@ -211,6 +211,14 @@ class FormBuilderFieldState<F extends FormBuilderField<T>, T>
   }
 
   @override
+  void didChangeValue(T? value) {
+    super.didChange(value);
+    _informFormForFieldChange(
+      isSetState: false,
+    );
+  }
+
+  @override
   void reset() {
     super.reset();
     setValue(initialValue);

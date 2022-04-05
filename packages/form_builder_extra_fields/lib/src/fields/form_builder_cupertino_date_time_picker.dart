@@ -294,7 +294,7 @@ class _FormBuilderCupertinoDateTimePickerState extends FormBuilderFieldState<
 
   @override
   void didChange(DateTime? val) {
-    super.didChange(val);
+    super.didChangeValue(val);
     _textFieldController.text = (val == null) ? '' : _dateFormat.format(val);
   }
 
