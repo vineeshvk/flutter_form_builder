@@ -266,7 +266,7 @@ class FormBuilderDateRangePickerState
 
   @override
   void didChange(DateTimeRange? value) {
-    super.didChange(value);
+    super.didChangeValue(value);
     _setTextFieldString();
   }
 

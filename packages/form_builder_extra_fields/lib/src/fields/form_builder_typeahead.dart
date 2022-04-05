@@ -397,7 +397,7 @@ class _FormBuilderTypeAheadState<T>
 
   @override
   void didChange(T? value) {
-    super.didChange(value);
+    super.didChangeValue(value);
     var text = _getTextString(value);
 
     if (_typeAheadController.text != text) {

@@ -274,7 +274,7 @@ class _FormBuilderColorPickerFieldState
 
   @override
   void didChange(Color? value) {
-    super.didChange(value);
+    super.didChangeValue(value);
     _setTextFieldString();
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 /// Single Checkbox field
@@ -124,6 +123,7 @@ class FormBuilderCheckbox extends FormBuilderField<bool> {
                 value: tristate ? state.value : (state.value ?? false),
                 onChanged: state.enabled
                     ? (value) {
+                        onChanged?.call(value);
                         if (shouldRequestFocus) {
                           state.requestFocus();
                         }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 enum OptionsOrientation { horizontal, vertical, wrap }
@@ -208,6 +207,13 @@ class FormBuilderFieldState<F extends FormBuilderField<T>, T>
       isSetState: false,
     );
     widget.onChanged?.call(value);
+  }
+
+  void didChangeValue(T? value) {
+    super.didChange(value);
+    _informFormForFieldChange(
+      isSetState: false,
+    );
   }
 
   @override
