@@ -7,7 +7,7 @@
 [![OSS Lifecycle](https://img.shields.io/osslifecycle/danvick/flutter_form_builder?style=for-the-badge)](#support)
 <!-- [![Awesome Flutter](https://img.shields.io/badge/Awesome-Flutter-FC60A8?logo=awesome-lists&style=for-the-badge)](https://github.com/Solido/awesome-flutter#widgets) -->
 
-[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png)](https://www.buymeacoffee.com/danvick)
+[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-1.svg)](https://www.buymeacoffee.com/danvick)
 
 ___
 
@@ -19,6 +19,7 @@ Flutter Form Builder provides an easy way of working with forms in Flutter by re
 
 - [FormBuilder Core (`flutter_form_builder`)](#flutter_form_builder)
 - [FormBuilder Extra Fields (`form_builder_extra_fields`)](#form_builder_extra_fields)
+- [FormBuilder Phone Field (`form_builder_phone_field`)](#form_builder_phone_field)
 - [FormBuilder Validators (`form_builder_validators`)](#form_builder_validators)
 
 ### flutter_form_builder
@@ -49,6 +50,17 @@ Unlike flutter_form_builder package which depends purely on Flutter provided inp
 
 [[View Documentation][extra_fields_docs]] [[View Source][extra_fields_code]]
 
+### form_builder_phone_field
+> [![Pub Version](https://img.shields.io/pub/v/form_builder_phone_field?logo=flutter&style=for-the-badge)](https://pub.dev/packages/form_builder_phone_field)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/danvick/flutter_form_builder/Form%20Builder%20Phone%20Field?logo=github&style=for-the-badge)](https://github.com/danvick/flutter_form_builder/actions/workflows/form_builder_phone_field.yaml)
+[![Codecov](https://img.shields.io/codecov/c/github/danvick/flutter_form_builder?logo=codecov&style=for-the-badge)](https://codecov.io/gh/danvick/flutter_form_builder/)
+[![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/danvick/flutter_form_builder?logo=codefactor&style=for-the-badge)](https://www.codefactor.io/repository/github/danvick/flutter_form_builder)
+[![GitHub](https://img.shields.io/github/license/danvick/flutter_form_builder?logo=open+source+initiative&style=for-the-badge)](https://github.com/danvick/flutter_form_builder/blob/master/LICENSE)
+
+Phone input field for flutter_form_builder package
+
+[[View Documentation][phone_field_docs]] [[View Source][phone_field_code]]
+
 ### form_builder_validators
 > [![Pub Version](https://img.shields.io/pub/v/form_builder_validators?logo=flutter&style=for-the-badge)](https://pub.dev/packages/form_builder_validators)
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/danvick/flutter_form_builder/Form%20Builder%20Validators?logo=github&style=for-the-badge)](https://github.com/danvick/flutter_form_builder/actions/workflows/form_builder_validators.yaml)
@@ -67,7 +79,7 @@ Also included is the `l10n` / `i18n` of error text messages into multiple langua
 If this set of packages was helpful to you in delivering your on project or you just wanna to support this
 repo, a cup of coffee would go a long way ;-)
 
-[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png)](https://www.buymeacoffee.com/danvick)
+[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-1.svg)](https://www.buymeacoffee.com/danvick)
 
 
 ## Credits
@@ -92,6 +104,10 @@ Made with [contributors-img](https://contributors-img.firebaseapp.com).
 [extra_fields_code]: https://github.com/danvick/flutter_form_builder/tree/master/packages/form_builder_extra_fields
 
 [extra_fields_docs]: https://github.com/danvick/flutter_form_builder/blob/master/packages/form_builder_extra_fields/README.md
+
+[phone_field_code]: https://github.com/danvick/flutter_form_builder/tree/master/packages/form_builder_phone_field
+
+[phone_field_docs]: https://github.com/danvick/flutter_form_builder/tree/master/packages/form_builder_phone_field/README.md
 
 [validators_code]: https://github.com/danvick/flutter_form_builder/tree/master/packages/form_builder_validators
 

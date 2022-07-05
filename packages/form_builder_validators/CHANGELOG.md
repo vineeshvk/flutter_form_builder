@@ -1,3 +1,13 @@
+## [8.1.1] - 26-Apr-2022
+* Fixed issue where email validator trims string before validation 
+
+## [8.1.0] - 13-Apr-2022
+* Added Romanian (ro) language support
+
+## [8.0.0] - 10-Apr-2022
+* **BREAKING CHANGE**: Avoid passing context to validator functions.
+* Added Swahili (sw) language support
+
 ## [7.9.0] - 04-Apr-2022
 * Added Bangla (bn) language support
 
@@ -45,7 +55,7 @@
 * Added Arabic and Persian/Farsi support
 
 ## [7.0.0-beta.0] - 19-May-2021
-* Use intl_utils package for localization
+* Use `intl_utils` package for localization
 * Documentation and example improvements - added instructions for localization
 * Minor type fixes
 

@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 /// A container for form fields.
@@ -64,6 +63,18 @@ class FormBuilder extends StatefulWidget {
   /// Whether the form should auto focus on the first field that fails validation.
   final bool autoFocusOnValidationFailure;
 
+  /// Whether to clear the internal value of a field when it is unregistered.
+  ///
+  /// Defaults to `false`.
+  ///
+  /// When set to `true`, the form builder will not keep the internal values
+  /// from disposed [FormBuilderField]s. This is useful for dynamic forms where
+  /// fields are registered and unregistered due to state change.
+  ///
+  /// This setting will have no effect when registering a field with the same
+  /// name as the unregistered one.
+  final bool clearValueOnUnregister;
+
   /// Creates a container for form fields.
   ///
   /// The [child] argument must not be null.
@@ -77,6 +88,7 @@ class FormBuilder extends StatefulWidget {
     this.skipDisabled = false,
     this.enabled = true,
     this.autoFocusOnValidationFailure = false,
+    this.clearValueOnUnregister = false,
   }) : super(key: key);
 
   static FormBuilderState? of(BuildContext context) =>
@@ -126,15 +138,13 @@ class FormBuilderState extends State<FormBuilder> {
         initialValue[name];
   }
 
-  void setInternalFieldValue<T>(
-    String name,
-    T? value, {
-    required bool isSetState,
-  }) {
+  void setInternalFieldValue<T>(String name, T? value,
+      {required bool isSetState}) {
     _instantValue[name] = value;
     if (isSetState) {
       setState(() {});
     }
+    widget.onChanged?.call();
   }
 
   bool get isValid =>
@@ -170,10 +180,7 @@ class FormBuilderState extends State<FormBuilder> {
     field.registerTransformer(_transformers);
     if (oldField != null) {
       // ignore: invalid_use_of_protected_member
-      field.setValue(
-        oldField.value,
-        populateForm: false,
-      );
+      field.setValue(oldField.value, populateForm: false);
     } else {
       // ignore: invalid_use_of_protected_member
       field.setValue(
@@ -192,6 +199,10 @@ class FormBuilderState extends State<FormBuilder> {
     if (field == _fields[name]) {
       _fields.remove(name);
       _transformers.remove(name);
+      if (widget.clearValueOnUnregister) {
+        _instantValue.remove(name);
+        _savedValue.remove(name);
+      }
     } else {
       assert(() {
         // This is OK to ignore when you are intentionally replacing a field
@@ -201,8 +212,6 @@ class FormBuilderState extends State<FormBuilder> {
         return true;
       }());
     }
-    // Removes internal field value
-    // _savedValue.remove(name);
   }
 
   void save() {
@@ -263,7 +272,7 @@ class FormBuilderState extends State<FormBuilder> {
       key: _formKey,
       autovalidateMode: widget.autovalidateMode,
       onWillPop: widget.onWillPop,
-      onChanged: widget.onChanged,
+      // `onChanged` is called during setInternalFieldValue else will be called early
       child: FocusTraversalGroup(
         policy: WidgetOrderTraversalPolicy(),
         child: widget.child,

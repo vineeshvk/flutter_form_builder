@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 enum OptionsOrientation { horizontal, vertical, wrap }
+
 enum ControlAffinity { leading, trailing }
 
 typedef ValueTransformer<T> = dynamic Function(T value);
@@ -45,7 +46,7 @@ class FormBuilderField<T> extends FormField<T> {
   /// {@macro flutter.widgets.Focus.focusNode}
   final FocusNode? focusNode;
 
-  //TODO: implement bool autofocus, ValueChanged<bool> onValidated
+  // TODO: implement bool autofocus, ValueChanged<bool> onValidated
 
   /// Creates a single form field.
   const FormBuilderField({
@@ -99,10 +100,10 @@ class FormBuilderFieldState<F extends FormBuilderField<T>, T>
 
   dynamic get transformedValue => widget.valueTransformer?.call(value) ?? value;
 
-  void registerTransformer(Map<String, Function> _map) {
-    final _fun = widget.valueTransformer;
-    if (_fun != null) {
-      _map[widget.name] = _fun;
+  void registerTransformer(Map<String, Function> map) {
+    final fun = widget.valueTransformer;
+    if (fun != null) {
+      map[widget.name] = fun;
     }
   }
 
@@ -122,6 +123,7 @@ class FormBuilderFieldState<F extends FormBuilderField<T>, T>
   bool get enabled => widget.enabled && (_formBuilderState?.enabled ?? true);
 
   late FocusNode effectiveFocusNode;
+  FocusAttachment? focusAttachment;
 
   @override
   void initState() {
@@ -134,15 +136,18 @@ class FormBuilderFieldState<F extends FormBuilderField<T>, T>
     effectiveFocusNode = widget.focusNode ?? FocusNode(debugLabel: widget.name);
     // Register a touch handler
     effectiveFocusNode.addListener(_touchedHandler);
+    focusAttachment = effectiveFocusNode.attach(context);
   }
 
   @override
   void didUpdateWidget(covariant FormBuilderField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
+      focusAttachment?.detach();
       effectiveFocusNode.removeListener(_touchedHandler);
       effectiveFocusNode = widget.focusNode ?? FocusNode();
       effectiveFocusNode.addListener(_touchedHandler);
+      focusAttachment = effectiveFocusNode.attach(context);
     }
   }
 
@@ -165,9 +170,7 @@ class FormBuilderFieldState<F extends FormBuilderField<T>, T>
   //   super.save();
   // }
 
-  void _informFormForFieldChange({
-    required bool isSetState,
-  }) {
+  void _informFormForFieldChange({required bool isSetState}) {
     if (_formBuilderState != null) {
       if (enabled || !_formBuilderState!.widget.skipDisabled) {
         _formBuilderState!.setInternalFieldValue<T>(
@@ -194,18 +197,14 @@ class FormBuilderFieldState<F extends FormBuilderField<T>, T>
   void setValue(T? value, {bool populateForm = true}) {
     super.setValue(value);
     if (populateForm) {
-      _informFormForFieldChange(
-        isSetState: false,
-      );
+      _informFormForFieldChange(isSetState: false);
     }
   }
 
   @override
   void didChange(T? value) {
     super.didChange(value);
-    _informFormForFieldChange(
-      isSetState: false,
-    );
+    _informFormForFieldChange(isSetState: false);
     widget.onChanged?.call(value);
   }
 

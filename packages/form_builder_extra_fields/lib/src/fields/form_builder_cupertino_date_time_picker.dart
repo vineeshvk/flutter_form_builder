@@ -61,7 +61,8 @@ class FormBuilderCupertinoDateTimePicker extends FormBuilderField<DateTime> {
   final DateCancelledCallback? onCancel;
   final DateChangedCallback? onConfirm;
   final DateFormat? format;
-  final DatePickerTheme? theme;
+  final DatePickerTheme? datePickerTheme;
+  final DatePickerTheme? timePickerTheme;
   final DateTime? firstDate;
   final DateTime? lastDate;
   final Locale? locale;
@@ -89,7 +90,8 @@ class FormBuilderCupertinoDateTimePicker extends FormBuilderField<DateTime> {
     this.locale,
     this.onCancel,
     this.onConfirm,
-    this.theme,
+    this.timePickerTheme,
+    this.datePickerTheme,
 
     //TextField options
     this.autocorrect = false,
@@ -134,7 +136,7 @@ class FormBuilderCupertinoDateTimePicker extends FormBuilderField<DateTime> {
           validator: validator,
           valueTransformer: valueTransformer,
           builder: (FormFieldState<DateTime?> field) {
-            final state = field as _FormBuilderCupertinoDateTimePickerState;
+            final state = field as FormBuilderCupertinoDateTimePickerState;
 
             return TextField(
               autocorrect: autocorrect,
@@ -172,11 +174,11 @@ class FormBuilderCupertinoDateTimePicker extends FormBuilderField<DateTime> {
         );
 
   @override
-  _FormBuilderCupertinoDateTimePickerState createState() =>
-      _FormBuilderCupertinoDateTimePickerState();
+  FormBuilderCupertinoDateTimePickerState createState() =>
+      FormBuilderCupertinoDateTimePickerState();
 }
 
-class _FormBuilderCupertinoDateTimePickerState extends FormBuilderFieldState<
+class FormBuilderCupertinoDateTimePickerState extends FormBuilderFieldState<
     FormBuilderCupertinoDateTimePicker, DateTime> {
   late TextEditingController _textFieldController;
 
@@ -187,9 +189,9 @@ class _FormBuilderCupertinoDateTimePickerState extends FormBuilderFieldState<
     super.initState();
     _textFieldController = widget.controller ?? TextEditingController();
     _dateFormat = widget.format ?? _getDefaultDateTimeFormat();
-    final _initialValue = initialValue;
+    final initialVal = initialValue;
     _textFieldController.text =
-        _initialValue == null ? '' : _dateFormat.format(_initialValue);
+        initialVal == null ? '' : _dateFormat.format(initialVal);
     effectiveFocusNode.addListener(_handleFocus);
   }
 
@@ -237,6 +239,7 @@ class _FormBuilderCupertinoDateTimePickerState extends FormBuilderFieldState<
       case CupertinoDateTimePickerInputType.both:
         final date = await _showDatePicker(context, currentValue);
         if (date != null) {
+          if (!mounted) return null;
           final time = await _showTimePicker(context, currentValue);
           newValue = combine(date, time);
         }
@@ -258,7 +261,7 @@ class _FormBuilderCupertinoDateTimePickerState extends FormBuilderFieldState<
       maxTime: widget.lastDate ?? DateTime(2100),
       currentTime: currentValue,
       locale: _localeType(),
-      theme: widget.theme,
+      theme: widget.datePickerTheme,
       onCancel: widget.onCancel,
       onConfirm: widget.onConfirm,
     );
@@ -273,12 +276,14 @@ class _FormBuilderCupertinoDateTimePickerState extends FormBuilderFieldState<
             currentTime: currentValue,
             showSecondsColumn: false,
             locale: _localeType(),
+            theme: widget.timePickerTheme,
           )
         : DatePicker.showTime12hPicker(
             context,
             showTitleActions: true,
             currentTime: currentValue,
             locale: _localeType(),
+            theme: widget.timePickerTheme,
           );
     final timePickerResult = await timePicker;
     final newDateTime = timePickerResult ?? currentValue;

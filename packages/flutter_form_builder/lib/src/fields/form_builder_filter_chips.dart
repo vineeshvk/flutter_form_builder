@@ -12,7 +12,7 @@ class FormBuilderFilterChip<T> extends FormBuilderField<List<T>> {
   final Color? selectedShadowColor;
   final Color? shadowColor;
   final double? elevation, pressElevation;
-  final List<FormBuilderFieldOption<T>> options;
+  final List<FormBuilderChipOption<T>> options;
   final MaterialTapTargetSize? materialTapTargetSize;
   final OutlinedBorder? shape;
 
@@ -32,6 +32,7 @@ class FormBuilderFilterChip<T> extends FormBuilderField<List<T>> {
   final WrapCrossAlignment crossAxisAlignment;
 
   final int? maxChips;
+  final ShapeBorder avatarBorder;
 
   /// Creates field with chips that acts like a list checkboxes.
   FormBuilderFilterChip({
@@ -42,10 +43,11 @@ class FormBuilderFilterChip<T> extends FormBuilderField<List<T>> {
     FormFieldValidator<List<T>>? validator,
     InputDecoration decoration = const InputDecoration(),
     Key? key,
-    List<T> initialValue = const [],
+    List<T>? initialValue,
     required String name, // From Super
     required this.options,
     this.alignment = WrapAlignment.start,
+    this.avatarBorder = const CircleBorder(),
     this.backgroundColor,
     this.checkmarkColor,
     this.clipBehavior = Clip.none,
@@ -73,7 +75,7 @@ class FormBuilderFilterChip<T> extends FormBuilderField<List<T>> {
     ValueChanged<List<T>?>? onChanged,
     ValueTransformer<List<T>?>? valueTransformer,
     VoidCallback? onReset,
-  })  : assert((maxChips == null) || (initialValue.length <= maxChips)),
+  })  : assert((maxChips == null) || ((initialValue ?? []).length <= maxChips)),
         super(
           autovalidateMode: autovalidateMode,
           decoration: decoration,
@@ -89,6 +91,7 @@ class FormBuilderFilterChip<T> extends FormBuilderField<List<T>> {
           valueTransformer: valueTransformer,
           builder: (FormFieldState<List<T>?> field) {
             final state = field as _FormBuilderFilterChipState<T>;
+            final fieldValue = field.value ?? [];
 
             return InputDecorator(
               decoration: state.decoration,
@@ -102,16 +105,17 @@ class FormBuilderFilterChip<T> extends FormBuilderField<List<T>> {
                 textDirection: textDirection,
                 verticalDirection: verticalDirection,
                 children: <Widget>[
-                  for (FormBuilderFieldOption<T> option in options)
+                  for (FormBuilderChipOption<T> option in options)
                     FilterChip(
                       label: option,
-                      selected: field.value!.contains(option.value),
+                      selected: fieldValue.contains(option.value),
+                      avatar: option.avatar,
                       onSelected: state.enabled &&
                               (null == maxChips ||
-                                  field.value!.length < maxChips ||
-                                  field.value!.contains(option.value))
+                                  fieldValue.length < maxChips ||
+                                  fieldValue.contains(option.value))
                           ? (selected) {
-                              final currentValue = [...field.value!];
+                              final currentValue = [...fieldValue];
                               if (selected) {
                                 currentValue.add(option.value);
                               } else {
@@ -137,6 +141,7 @@ class FormBuilderFilterChip<T> extends FormBuilderField<List<T>> {
                       labelStyle: labelStyle,
                       showCheckmark: showCheckmark,
                       labelPadding: labelPadding,
+                      avatarBorder: avatarBorder,
                     ),
                 ],
               ),
@@ -145,7 +150,7 @@ class FormBuilderFilterChip<T> extends FormBuilderField<List<T>> {
         );
 
   @override
-  _FormBuilderFilterChipState<T> createState() =>
+  FormBuilderFieldState<FormBuilderFilterChip<T>, List<T>> createState() =>
       _FormBuilderFilterChipState<T>();
 }
 

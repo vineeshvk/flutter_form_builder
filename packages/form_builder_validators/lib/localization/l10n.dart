@@ -101,6 +101,16 @@ class FormBuilderLocalizations {
     );
   }
 
+  /// `Value must have a length equal to {length}`
+  String equalLengthErrorText(Object length) {
+    return Intl.message(
+      'Value must have a length equal to $length',
+      name: 'equalLengthErrorText',
+      desc: 'Error Text for required field',
+      args: [length],
+    );
+  }
+
   /// `This field requires a valid email address.`
   String get emailErrorText {
     return Intl.message(
@@ -227,9 +237,12 @@ class AppLocalizationDelegate
       Locale.fromSubtags(languageCode: 'nl'),
       Locale.fromSubtags(languageCode: 'pl'),
       Locale.fromSubtags(languageCode: 'pt'),
+      Locale.fromSubtags(languageCode: 'ro'),
       Locale.fromSubtags(languageCode: 'ru'),
       Locale.fromSubtags(languageCode: 'sk'),
       Locale.fromSubtags(languageCode: 'sl'),
+      Locale.fromSubtags(languageCode: 'sw'),
+      Locale.fromSubtags(languageCode: 'tr'),
       Locale.fromSubtags(languageCode: 'uk'),
       Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
       Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),

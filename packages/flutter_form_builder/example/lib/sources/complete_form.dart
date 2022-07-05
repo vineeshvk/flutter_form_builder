@@ -7,12 +7,12 @@ class CompleteForm extends StatefulWidget {
   const CompleteForm({Key? key}) : super(key: key);
 
   @override
-  CompleteFormState createState() {
-    return CompleteFormState();
+  State<CompleteForm> createState() {
+    return _CompleteFormState();
   }
 }
 
-class CompleteFormState extends State<CompleteForm> {
+class _CompleteFormState extends State<CompleteForm> {
   bool autoValidate = true;
   bool readOnly = false;
   bool showSegmentedControl = true;
@@ -47,19 +47,21 @@ class CompleteFormState extends State<CompleteForm> {
                   const SizedBox(height: 15),
                   FormBuilderDateTimePicker(
                     name: 'date',
+                    initialEntryMode: DatePickerEntryMode.calendar,
                     initialValue: DateTime.now(),
-                    inputType: InputType.time,
+                    inputType: InputType.both,
                     decoration: InputDecoration(
                       labelText: 'Appointment Time',
                       suffixIcon: IconButton(
-                          icon: const Icon(Icons.close),
-                          onPressed: () {
-                            _formKey.currentState!.fields['date']
-                                ?.didChange(null);
-                          }),
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          _formKey.currentState!.fields['date']
+                              ?.didChange(null);
+                        },
+                      ),
                     ),
                     initialTime: const TimeOfDay(hour: 8, minute: 0),
-                    locale: const Locale.fromSubtags(languageCode: 'fr'),
+                    // locale: const Locale.fromSubtags(languageCode: 'fr'),
                   ),
                   FormBuilderDateRangePicker(
                     name: 'date_range',
@@ -82,7 +84,7 @@ class CompleteFormState extends State<CompleteForm> {
                   FormBuilderSlider(
                     name: 'slider',
                     validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.min(context, 6),
+                      FormBuilderValidators.min(6),
                     ]),
                     onChanged: _onChanged,
                     min: 0.0,
@@ -134,7 +136,6 @@ class CompleteFormState extends State<CompleteForm> {
                       ),
                     ),
                     validator: FormBuilderValidators.equal(
-                      context,
                       true,
                       errorText:
                           'You must accept terms and conditions to continue',
@@ -158,9 +159,9 @@ class CompleteFormState extends State<CompleteForm> {
                     },
                     // valueTransformer: (text) => num.tryParse(text),
                     validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(context),
-                      FormBuilderValidators.numeric(context),
-                      FormBuilderValidators.max(context, 70),
+                      FormBuilderValidators.required(),
+                      FormBuilderValidators.numeric(),
+                      FormBuilderValidators.max(70),
                     ]),
                     // initialValue: '12',
                     keyboardType: TextInputType.number,
@@ -179,9 +180,10 @@ class CompleteFormState extends State<CompleteForm> {
                     allowClear: true,
                     hint: const Text('Select Gender'),
                     validator: FormBuilderValidators.compose(
-                        [FormBuilderValidators.required(context)]),
+                        [FormBuilderValidators.required()]),
                     items: genderOptions
                         .map((gender) => DropdownMenuItem(
+                              alignment: AlignmentDirectional.center,
                               value: gender,
                               child: Text(gender),
                             ))
@@ -204,7 +206,7 @@ class CompleteFormState extends State<CompleteForm> {
                     name: 'best_language',
                     onChanged: _onChanged,
                     validator: FormBuilderValidators.compose(
-                        [FormBuilderValidators.required(context)]),
+                        [FormBuilderValidators.required()]),
                     options: ['Dart', 'Kotlin', 'Java', 'Swift', 'Objective-C']
                         .map((lang) => FormBuilderFieldOption(
                               value: lang,
@@ -233,7 +235,7 @@ class CompleteFormState extends State<CompleteForm> {
                     onChanged: _onChanged,
                   ),
                   FormBuilderSwitch(
-                    title: const Text('I Accept the tems and conditions'),
+                    title: const Text('I Accept the terms and conditions'),
                     name: 'accept_terms_switch',
                     initialValue: true,
                     onChanged: _onChanged,
@@ -258,8 +260,8 @@ class CompleteFormState extends State<CompleteForm> {
                       color: Colors.red,
                     ),
                     validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.minLength(context, 1),
-                      FormBuilderValidators.maxLength(context, 3),
+                      FormBuilderValidators.minLength(1),
+                      FormBuilderValidators.maxLength(3),
                     ]),
                   ),
                 ],

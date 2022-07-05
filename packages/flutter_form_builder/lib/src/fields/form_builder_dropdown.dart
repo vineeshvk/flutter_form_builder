@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 /// Field for Dropdown button
@@ -164,7 +163,7 @@ class FormBuilderDropdown<T> extends FormBuilderField<T> {
   /// the dropdown button. That's because, in this case, the initial scroll
   /// offset is computed as if all of the menu item heights were
   /// [kMinInteractiveDimension].
-  final double itemHeight;
+  final double? itemHeight;
 
   /// The color for the button's [Material] when it has the input focus.
   final Color? focusColor;
@@ -193,6 +192,38 @@ class FormBuilderDropdown<T> extends FormBuilderField<T> {
   final double? menuMaxHeight;
 
   final bool shouldRequestFocus;
+
+  /// Whether detected gestures should provide acoustic and/or haptic feedback.
+  ///
+  /// For example, on Android a tap will produce a clicking sound and a
+  /// long-press will produce a short vibration, when feedback is enabled.
+  ///
+  /// By default, platform-specific feedback is enabled.
+  ///
+  /// See also:
+  ///
+  ///  * [Feedback] for providing platform-specific feedback to certain actions.
+  final bool? enableFeedback;
+
+  /// Defines how the hint or the selected item is positioned within the button.
+  ///
+  /// This property must not be null. It defaults to [AlignmentDirectional.centerStart].
+  ///
+  /// See also:
+  ///
+  ///  * [Alignment], a class with convenient constants typically used to
+  ///    specify an [AlignmentGeometry].
+  ///  * [AlignmentDirectional], like [Alignment] for specifying alignments
+  ///    relative to text direction.
+  final AlignmentGeometry alignment;
+
+  /// Defines the corner radii of the menu's rounded rectangle shape.
+  ///
+  /// The radii of the first menu item's top left and right corners are
+  /// defined by the corresponding properties of the [borderRadius].
+  /// Similarly, the radii of the last menu item's bottom and right corners
+  /// are defined by the corresponding properties of the [borderRadius].
+  final BorderRadius? borderRadius;
 
   /// Creates field for Dropdown button
   FormBuilderDropdown({
@@ -227,9 +258,12 @@ class FormBuilderDropdown<T> extends FormBuilderField<T> {
     this.shouldRequestFocus = false,
     this.dropdownColor,
     this.focusColor,
-    this.itemHeight = kMinInteractiveDimension,
+    this.itemHeight,
     this.selectedItemBuilder,
     this.menuMaxHeight,
+    this.enableFeedback,
+    this.borderRadius,
+    this.alignment = AlignmentDirectional.centerStart,
   }) : /*: assert(allowClear == true || clearIcon != null)*/ super(
           key: key,
           initialValue: initialValue,
@@ -297,6 +331,9 @@ class FormBuilderDropdown<T> extends FormBuilderField<T> {
                         itemHeight: itemHeight,
                         selectedItemBuilder: selectedItemBuilder,
                         menuMaxHeight: menuMaxHeight,
+                        borderRadius: borderRadius,
+                        enableFeedback: enableFeedback,
+                        alignment: alignment,
                       ),
                     ),
                   ),
@@ -314,7 +351,8 @@ class FormBuilderDropdown<T> extends FormBuilderField<T> {
         );
 
   @override
-  _FormBuilderDropdownState<T> createState() => _FormBuilderDropdownState<T>();
+  FormBuilderFieldState<FormBuilderDropdown<T>, T> createState() =>
+      _FormBuilderDropdownState<T>();
 }
 
 class _FormBuilderDropdownState<T>

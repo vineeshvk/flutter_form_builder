@@ -62,7 +62,7 @@ class FormBuilderSignaturePad extends FormBuilderField<Uint8List> {
           validator: validator,
           valueTransformer: valueTransformer,
           builder: (FormFieldState<Uint8List?> field) {
-            final state = field as _FormBuilderSignaturePadState;
+            final state = field as FormBuilderSignaturePadState;
             final theme = Theme.of(state.context);
             final localizations = MaterialLocalizations.of(state.context);
             final cancelButtonColor =
@@ -122,11 +122,10 @@ class FormBuilderSignaturePad extends FormBuilderField<Uint8List> {
         );
 
   @override
-  _FormBuilderSignaturePadState createState() =>
-      _FormBuilderSignaturePadState();
+  FormBuilderSignaturePadState createState() => FormBuilderSignaturePadState();
 }
 
-class _FormBuilderSignaturePadState
+class FormBuilderSignaturePadState
     extends FormBuilderFieldState<FormBuilderSignaturePad, Uint8List> {
   late SignatureController _controller;
 
@@ -138,10 +137,10 @@ class _FormBuilderSignaturePadState
     _controller = widget.controller ?? SignatureController();
     _controller.addListener(() async {
       requestFocus();
-      final _value = await _getControllerValue();
-      didChange(_value);
+      final val = await _getControllerValue();
+      didChange(val);
     });
-    SchedulerBinding.instance?.addPostFrameCallback((Duration duration) async {
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) async {
       // Get initialValue or if points are set, use the  points
       didChange(initialValue ?? await _getControllerValue());
     });

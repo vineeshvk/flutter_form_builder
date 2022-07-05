@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:intl/intl.dart';
 
 /// Field to select a range of values on a Slider
 class FormBuilderRangeSlider extends FormBuilderField<RangeValues> {
@@ -111,7 +110,7 @@ class FormBuilderRangeSlider extends FormBuilderField<RangeValues> {
     //From Super
     required String name,
     FormFieldValidator<RangeValues>? validator,
-    required RangeValues initialValue,
+    RangeValues? initialValue,
     InputDecoration decoration = const InputDecoration(),
     ValueChanged<RangeValues?>? onChanged,
     ValueTransformer<RangeValues?>? valueTransformer,
@@ -150,7 +149,8 @@ class FormBuilderRangeSlider extends FormBuilderField<RangeValues> {
             focusNode: focusNode,
             builder: (FormFieldState<RangeValues?> field) {
               final state = field as _FormBuilderRangeSliderState;
-              final _numberFormat = numberFormat ?? NumberFormat.compact();
+              final effectiveNumberFormat =
+                  numberFormat ?? NumberFormat.compact();
 
               return InputDecorator(
                 decoration: state.decoration,
@@ -160,7 +160,7 @@ class FormBuilderRangeSlider extends FormBuilderField<RangeValues> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       RangeSlider(
-                        values: field.value!,
+                        values: field.value ?? RangeValues(min, min),
                         min: min,
                         max: max,
                         divisions: divisions,
@@ -184,21 +184,21 @@ class FormBuilderRangeSlider extends FormBuilderField<RangeValues> {
                           if (displayValues != DisplayValues.none &&
                               displayValues != DisplayValues.current)
                             Text(
-                              _numberFormat.format(min),
+                              effectiveNumberFormat.format(min),
                               style: minTextStyle ?? textStyle,
                             ),
                           const Spacer(),
                           if (displayValues != DisplayValues.none &&
                               displayValues != DisplayValues.minMax)
                             Text(
-                              '${_numberFormat.format(field.value!.start)} - ${_numberFormat.format(field.value!.end)}',
+                              '${effectiveNumberFormat.format(field.value!.start)} - ${effectiveNumberFormat.format(field.value!.end)}',
                               style: textStyle,
                             ),
                           const Spacer(),
                           if (displayValues != DisplayValues.none &&
                               displayValues != DisplayValues.current)
                             Text(
-                              _numberFormat.format(max),
+                              effectiveNumberFormat.format(max),
                               style: maxTextStyle ?? textStyle,
                             ),
                         ],
@@ -210,7 +210,8 @@ class FormBuilderRangeSlider extends FormBuilderField<RangeValues> {
             });
 
   @override
-  _FormBuilderRangeSliderState createState() => _FormBuilderRangeSliderState();
+  FormBuilderFieldState<FormBuilderRangeSlider, RangeValues> createState() =>
+      _FormBuilderRangeSliderState();
 }
 
 class _FormBuilderRangeSliderState
