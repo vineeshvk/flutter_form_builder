@@ -2,10 +2,8 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:intl/intl.dart';
-
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:intl/intl.dart';
 
 enum InputType { date, time, both }
 
@@ -331,11 +329,18 @@ class _FormBuilderDateTimePickerState
 
   Future<DateTime?> _showDatePicker(
       BuildContext context, DateTime? currentValue) {
+    DateTime? dateValue = currentValue;
+    if (dateValue?.isBefore(widget.firstDate ?? DateTime(1900)) ?? false) {
+      dateValue = null;
+    }
+    if (dateValue?.isAfter(widget.lastDate ?? DateTime(2100)) ?? false) {
+      dateValue = null;
+    }
     return showDatePicker(
       context: context,
       selectableDayPredicate: widget.selectableDayPredicate,
       initialDatePickerMode: widget.initialDatePickerMode,
-      initialDate: currentValue ?? widget.initialDate ?? DateTime.now(),
+      initialDate: dateValue ?? widget.initialDate ?? DateTime.now(),
       firstDate: widget.firstDate ?? DateTime(1900),
       lastDate: widget.lastDate ?? DateTime(2100),
       locale: widget.locale,
