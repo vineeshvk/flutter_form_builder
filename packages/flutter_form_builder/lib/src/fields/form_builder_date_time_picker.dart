@@ -392,7 +392,7 @@ class _FormBuilderDateTimePickerState
 
   @override
   void didChange(DateTime? val) {
-    super.didChangeValue(val);
+    super.didChange(val);
     _textFieldController.text = (val == null) ? '' : _dateFormat.format(val);
   }
 }
